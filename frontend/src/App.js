@@ -15,7 +15,7 @@ const App = () => {
     fileReader.onload = (e) => {
       let arrayBuffer = fileReader.result;
       var data = new Uint8Array(arrayBuffer);
-      var arr = new Array();
+      var arr = [];
       for (var i = 0; i !== data.length; ++i)
         arr[i] = String.fromCharCode(data[i]);
       var bstr = arr.join("");
@@ -37,9 +37,6 @@ const App = () => {
 
   useEffect(() => {
     console.log(data.length);
-    for(var i=0; i < data.length; i++){
-      console.log(i);
-    }
   }, [data])
 
 
