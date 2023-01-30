@@ -7,9 +7,11 @@ import * as XLSX from "xlsx";
 
 const App = () => {
   const [data, setData] = useState([]);
+	const [uploadLabel, setUploadLabel] = useState('');
 
   const addFile = (event) => {
     let file = event.target.files[0];
+		setUploadLabel(event.target.files[0].name);
     let fileReader = new FileReader();
     fileReader.readAsArrayBuffer(file);
     fileReader.onload = (e) => {
@@ -47,7 +49,7 @@ const App = () => {
       <main>
         <Routes>
           <Route path="/"  /> 
-          <Route path="upload" element={<Upload data={data} addFile={addFile} />}/> 
+          <Route path="upload" element={<Upload uploadLabel={uploadLabel} data={data} addFile={addFile} />}/> 
           <Route path="insights"  /> 
           <Route path="saved"  /> 
         </Routes>

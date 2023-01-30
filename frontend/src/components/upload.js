@@ -1,14 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 const Upload = (props) => {
 
-	const [uploadLabel, setUploadLabel] = useState('');
-
-	const uploadHandler = (e) => {
-		props.addFile(e);
-		console.log(e.target.files[0].name);
-		setUploadLabel(e.target.files[0].name);
-	}
 	return (
 			<div className='upload'>
 				<label htmlFor='input-tag' className="upload-btn">
@@ -29,7 +22,7 @@ const Upload = (props) => {
 						type="file"
 						placeholder="Upload file to get started!"
 						accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-						onChange={uploadHandler}
+						onChange={props.addFile}
 					/>
 					
 			{/* {Object.entries(props.data).map(([key, value]) => (
@@ -44,8 +37,8 @@ const Upload = (props) => {
 				<div key={i}>{item.text} </div>
 			))}*/}
 				<ul className='table'>
-					{uploadLabel !== '' &&
-						<li className='table-title'>Displaying 100/{props.data.length} rows from {uploadLabel}</li>
+					{props.uploadLabel !== '' &&
+						<li className='table-title'>Displaying 100/{props.data.length} rows from {props.uploadLabel}</li>
 					}
 					
 					{props.data.slice(0, 100).map((item, i) => (
