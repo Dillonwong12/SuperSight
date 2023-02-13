@@ -3,11 +3,17 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Navbar from "./components/navbar";
 import Upload from "./components/upload";
+import Insights from "./components/insights";
+import Emotions from "./components/emotions";
+import Summarize from "./components/summarize";
 import * as XLSX from "xlsx";
+import axios from 'axios';
 
 const App = () => {
   const [data, setData] = useState([]);
 	const [uploadLabel, setUploadLabel] = useState('');
+	const [emotions, setEmotions] = useState([]);
+	const [emotionCounts, setEmotionCounts] = useState({});
 
   const addFile = (event) => {
     let file = event.target.files[0];
@@ -24,14 +30,24 @@ const App = () => {
       var workbook = XLSX.read(bstr, { type: "binary" });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
-      console.log(XLSX.utils.sheet_to_json(worksheet));
       //localStorage.setItem("data", XLSX.utils.sheet_to_json(worksheet, { raw: true }))
       var json_data = XLSX.utils.sheet_to_json(worksheet)
       var result = [];
       for(var j in json_data)
         result.push([j, json_data[j]]);
-      console.log(Object.values(json_data));
-      setData(Object.values(json_data));
+			var json_data_filtered = json_data.filter((row) => {return row.text !== undefined})
+      console.log(Object.values(json_data_filtered));
+			console.log(json_data_filtered);
+			var texts = json_data_filtered.map((record) => record.text)
+      //setData(Object.values(json_data_filtered));
+			setData(texts);
+			const input = {"texts": texts}
+			axios.post('http://127.0.0.1:8000/predict', input)
+				.then(res => {
+					setEmotions(res.data.result)
+					})
+				.catch(err => console.log(err))
+			
       //setData(JSON.stringify(XLSX.utils.sheet_to_json(worksheet)));
       //var arraylist = XLSX.utils.sheet_to_json(worksheet, { raw: true });
     };
@@ -41,6 +57,31 @@ const App = () => {
     console.log(data.length);
   }, [data])
 
+	const emotionCounter = () => {
+		console.log('in emotioncounter');
+		console.log(emotions)
+		var counts = {"0":0, "1":0, "2":0, "3":0, "4":0, "5":0, "6":0, "7":0};
+		for (const label of emotions){
+			counts[label] = counts[label] ? counts[label] + 1 : 1;
+		}
+		Object.keys(counts).sort();
+		console.log(counts);
+		return Object.values(counts)
+	}
+
+	useEffect(() => {
+		console.log('emotions changed');
+		setEmotionCounts({
+			labels: ['Anger', 'Concern', 'Disappointment', 'Fear', 'Joy', 'Sadness', 'Surprise', 'Neutral'],
+			datasets: [{
+				label: 'Count',
+				data: emotionCounter(),
+				backgroundColor: ['#f94144', '#5e548e', '#184e77', '#f9c74f', '#43aa8b', '#168aad', '#f8961e', '#dee2e6']
+			}]
+		})
+	}, [emotions])
+
+	//
 
   return (
     <Router>
@@ -50,7 +91,9 @@ const App = () => {
         <Routes>
           <Route path="/"  /> 
           <Route path="upload" element={<Upload uploadLabel={uploadLabel} data={data} addFile={addFile} />}/> 
-          <Route path="insights"  /> 
+          <Route path="insights" element={<Insights data={data} emotions={emotions} emotionCounts={emotionCounts}/>}/>
+					<Route path="insights/emotions" element={<Emotions data={data} emotions={emotions} emotionCounts={emotionCounts}/>}/>
+					<Route path="insights/summarize" element={<Summarize/>}/> 
           <Route path="saved"  /> 
         </Routes>
       </main>

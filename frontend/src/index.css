@@ -126,8 +126,10 @@ i {
 .nav-dropdown {
   height: 2rem;
   padding-top: 0.5rem;
+	padding-left: 25%;
   color: var(--text-primary);
   text-decoration: none;
+	text-align:left;
   filter: grayscale(100%) opacity(0.7);
   transition: var(--transition-speed);
   display: none;

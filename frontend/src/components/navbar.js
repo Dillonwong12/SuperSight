@@ -27,7 +27,7 @@ const Navbar = (props) => {
             <li className="nav-item" >
                 <Link to="/upload" id='upload' className={`nav-link ${active === 'upload' ? "active" : ""}`} onClick={handleActiveLink}>
                 <i className="fa-solid fa-file-arrow-up"></i>
-                <span className="link-text">File Upload</span>
+                <span className="link-text">Upload</span>
                 </Link>
             </li>
             <li className="nav-item" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
@@ -35,8 +35,11 @@ const Navbar = (props) => {
                 <i className="fa-solid fa-crosshairs"></i>
                 <span className="link-text">Insights</span>
                 </Link>
-                <Link to='/insights/emotion' id='insights' className={`nav-dropdown ${showDropdown ? 'show': ''}`} onClick={handleActiveLink}>
+                <Link to='/insights/emotions' id='insights' className={`nav-dropdown ${showDropdown ? 'show': ''}`} onClick={handleActiveLink}>
                     <span className="link-text">Emotions</span>
+                </Link>
+								<Link to='/insights/summarize' id='insights' className={`nav-dropdown ${showDropdown ? 'show': ''}`} onClick={handleActiveLink}>
+                    <span className="link-text">Summarize</span>
                 </Link>
             </li>
             <li className="nav-item" >

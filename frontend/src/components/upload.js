@@ -24,13 +24,7 @@ const Upload = (props) => {
 						accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
 						onChange={props.addFile}
 					/>
-					
-			{/* {Object.entries(props.data).map(([key, value]) => (
-			<div className="item" key={key}>
-				{value}
-				</div>
-			))} */}
-			{/* <h1>{props.data}</h1> */}
+	
 			<div className='container'>
 				{/* {uploadLabel}
 			{props.data.map((item, i) => (
@@ -42,8 +36,8 @@ const Upload = (props) => {
 					}
 					
 					{props.data.slice(0, 100).map((item, i) => (
-						<li className='table-row'>
-							<div key={i}>{item.text} </div>
+						<li key={i} className='table-row'>
+							<div >{item} </div>
 						</li>
 					))}
 				</ul>
