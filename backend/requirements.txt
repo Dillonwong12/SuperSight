@@ -1,5 +1,6 @@
-fastapi==0.89.1
-pydantic==1.10.4
+fastapi==0.92.0
+pydantic==1.10.5
+rake_nltk==1.0.6
 torch==1.13.1
-transformers==4.26.0
+transformers==4.26.1
 uvicorn==0.20.0
