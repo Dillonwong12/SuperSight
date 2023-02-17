@@ -1,4 +1,4 @@
-import React, {useState}  from 'react';
+import React, {Fragment, useState}  from 'react';
 import axios from 'axios';
 
 const Summarize = (props) => {
@@ -14,17 +14,16 @@ const Summarize = (props) => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post('http://127.0.0.1:8000/summarize', {"text": text});
+			const res = await axios.post("http://localhost:5000/api/generate", {"text": text});
 			setSummary(res.data.result);
-			console.log(summary);
 		} catch (error) {
 			console.log(error);
 		}
-		
+		console.log(summary);
 	}
 
 	return (
-		<div>
+		<div className='container'>
 			<h1>Generative AI Summarizer</h1>
 			<form onSubmit={onSubmit}>
 				<textarea id="" cols="30" rows="10" placeholder="Simply copy paste text here" required onChange={onChangeText}></textarea>
@@ -32,7 +31,16 @@ const Summarize = (props) => {
           <input type="submit" value="Generate Summary" className="btn btn-primary" />
         </div>
 			</form>
-			<h3>{summary}</h3>
+			{
+				summary !== '' ?
+				<div className='mainBox'>
+					<h4>{summary}</h4>
+				</div>
+				:
+				<Fragment></Fragment>
+			}
+			
+			
 
 		</div>
 		

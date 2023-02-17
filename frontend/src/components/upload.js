@@ -6,7 +6,7 @@ const Upload = (props) => {
 			<div className='upload'>
 				<label htmlFor='input-tag' className="upload-btn">
 				Upload Excel/CSV<br/>
-					<svg width="277" height="62">
+					<svg width="277" height="62" z-index='0'>
     				<defs>
         			<linearGradient id="grad1">
 								<stop offset="0%" stopColor="#ED5523"/>

@@ -6,7 +6,9 @@ import axios from 'axios';
 const Emotion = (props) => {
 	const count = props.data.datasets[0].data[props.id];
 	const label = props.data.labels[props.id];
-	console.log(props.keywords);
+	const percentage = ((count/props.emotions.length)*100).toFixed(2);
+	
+	const [saved, setSaved] = useState(false);
 	
 	const data = {
 		labels: [label, 'Others'],
@@ -16,10 +18,29 @@ const Emotion = (props) => {
 			backgroundColor: [props.data.datasets[0].backgroundColor[props.id], 'hsl(227, 6%, 73%)']
 		}]
 	} 
+
+	const saveEmotion = async () => {
+		try {
+			const emotionAnalysis = {
+				file: props.uploadLabel,
+				emotion: label,
+				percentage: percentage,
+				keywords: props.keywords.map((keyword) => keyword[1]).toString(),
+				date: new Date()
+			}
+			await axios.post('http://localhost:5000/emotions/save', emotionAnalysis);
+			setSaved(true);
+
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
 	return (
 		<div className={`emotion-box ${label.toLowerCase()}`}>
 			
-			<h2>{label}</h2><h3 className='percentage-txt'>{count === 0 ? 'No records found for this category...' :`${ ((count/props.emotions.length)*100).toFixed(2)}%`}</h3>
+			<h2>{label}</h2><h3 className='percentage-txt'>{count === 0 ? 'No records found for this category...' :`${percentage}%`}</h3>
+
 			{count === 0 ?
 			<Fragment></Fragment>
 			:
@@ -32,6 +53,13 @@ const Emotion = (props) => {
 					{props.keywords.map((keyword) =>
 					<li className='key-phrases-li'>{keyword[1]}</li>)}
 				</ul>
+						<div></div>
+						{saved === false ? 
+							<i className="fa-solid fa-bookmark unsaved" onClick={saveEmotion}></i>
+							:
+							<i className="fa-solid fa-bookmark saved" ></i>
+						}
+						
 			</Fragment>
 			:
 			<Fragment>
@@ -98,7 +126,7 @@ const Emotions = (props) => {
 						<h1>Emotion Analysis</h1>
 						{
 						props.emotionCounts.labels.map((label, i) => {
-							return <Emotion data={props.emotionCounts} id={i} emotions={props.emotions} key={i} keywords={keyWords[i]}></Emotion>
+							return <Emotion uploadLabel={props.uploadLabel} data={props.emotionCounts} id={i} emotions={props.emotions} key={label} keywords={keyWords[i]}></Emotion>
 						})}
 					</Fragment>
 					

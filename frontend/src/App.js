@@ -6,6 +6,7 @@ import Upload from "./components/upload";
 import Insights from "./components/insights";
 import Emotions from "./components/emotions";
 import Summarize from "./components/summarize";
+import SavedEmotions from "./components/savedEmotions"
 import * as XLSX from "xlsx";
 import axios from 'axios';
 
@@ -92,9 +93,9 @@ const App = () => {
           <Route path="/"  /> 
           <Route path="upload" element={<Upload uploadLabel={uploadLabel} data={data} addFile={addFile} />}/> 
           <Route path="insights" element={<Insights data={data} emotions={emotions} emotionCounts={emotionCounts}/>}/>
-					<Route path="insights/emotions" element={<Emotions data={data} emotions={emotions} emotionCounts={emotionCounts}/>}/>
+					<Route path="insights/emotions" element={<Emotions uploadLabel={uploadLabel} data={data} emotions={emotions} emotionCounts={emotionCounts}/>}/>
 					<Route path="insights/summarize" element={<Summarize/>}/> 
-          <Route path="saved"  /> 
+          <Route path="saved" element={<SavedEmotions/>}/> 
         </Routes>
       </main>
       </div>
