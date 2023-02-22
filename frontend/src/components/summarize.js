@@ -1,6 +1,9 @@
 import React, {Fragment, useState}  from 'react';
 import axios from 'axios';
 
+/*
+Renders a text area and submit button for generating summaries of call centre transcripts.
+*/
 const Summarize = (props) => {
 	const [text, setText] = useState('');
 	const [summary, setSummary] = useState('');
@@ -11,6 +14,7 @@ const Summarize = (props) => {
 		console.log(text);
 	}
 
+	// Calls the OpenAI API to generate a summary
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		try {
@@ -39,12 +43,7 @@ const Summarize = (props) => {
 				:
 				<Fragment></Fragment>
 			}
-			
-			
-
 		</div>
-		
-
 	)
 }
 

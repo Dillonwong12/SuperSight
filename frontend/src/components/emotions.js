@@ -3,6 +3,9 @@ import {Rings} from "react-loader-spinner";
 import DonutChart from './donutChart';
 import axios from 'axios';
 
+/*
+Each emotion category will be rendered in an emotion-box, containing a donut chart, key phrases, and a save button
+*/
 const Emotion = (props) => {
 	const count = props.data.datasets[0].data[props.id];
 	const label = props.data.labels[props.id];
@@ -10,6 +13,7 @@ const Emotion = (props) => {
 	
 	const [saved, setSaved] = useState(false);
 	
+	// Data for the DonutChart
 	const data = {
 		labels: [label, 'Others'],
 		datasets: [{
@@ -36,6 +40,7 @@ const Emotion = (props) => {
 		}
 	}
 
+	// If there are no records for a given category, notify the user. Otherwise, render the DonutChart and key phrases 
 	return (
 		<div className={`emotion-box ${label.toLowerCase()}`}>
 			
@@ -70,6 +75,7 @@ const Emotion = (props) => {
 	)
 }
 
+/* Controls the logic of the emotions page. Upon a change in `emotionCounts`, loads key phrases for each emotion. */
 const Emotions = (props) => {
 	const [keyWords, setKeyWords] = useState([]);
 	
@@ -98,6 +104,8 @@ const Emotions = (props) => {
 		getKeyWords();
 	}, [props.emotionCounts])
 
+	/* If no files have been submitted, notify the user. Once they upload a file, display a loader as analysis proceeds.
+	Finally, map the `emotionCounts` to each emotion. */
 	return (
 		<div className='container'>
 			{props.data.length === 0 ?

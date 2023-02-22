@@ -16,6 +16,9 @@ const App = () => {
 	const [emotions, setEmotions] = useState([]);
 	const [emotionCounts, setEmotionCounts] = useState({});
 
+	/*
+	Processes uploaded Excel/CSV files, then passes the data to the backend to make classify records by emotion.
+	*/
   const addFile = (event) => {
     let file = event.target.files[0];
 		setUploadLabel(event.target.files[0].name);
@@ -40,7 +43,6 @@ const App = () => {
       console.log(Object.values(json_data_filtered));
 			console.log(json_data_filtered);
 			var texts = json_data_filtered.map((record) => record.text)
-      //setData(Object.values(json_data_filtered));
 			setData(texts);
 			const input = {"texts": texts}
 			axios.post('http://127.0.0.1:8000/predict', input)
@@ -48,9 +50,6 @@ const App = () => {
 					setEmotions(res.data.result)
 					})
 				.catch(err => console.log(err))
-			
-      //setData(JSON.stringify(XLSX.utils.sheet_to_json(worksheet)));
-      //var arraylist = XLSX.utils.sheet_to_json(worksheet, { raw: true });
     };
   }
 
@@ -58,6 +57,9 @@ const App = () => {
     console.log(data.length);
   }, [data])
 
+	/*
+	Counts the number of records classified to each emotion category, returning a list of the frequency counts
+	*/
 	const emotionCounter = () => {
 		console.log('in emotioncounter');
 		console.log(emotions)
@@ -72,6 +74,7 @@ const App = () => {
 
 	useEffect(() => {
 		console.log('emotions changed');
+		// `emotionCounts` will be used to display charts and calculate percentages
 		setEmotionCounts({
 			labels: ['Anger', 'Concern', 'Disappointment', 'Fear', 'Joy', 'Sadness', 'Surprise', 'Neutral'],
 			datasets: [{
@@ -81,8 +84,6 @@ const App = () => {
 			}]
 		})
 	}, [emotions])
-
-	//
 
   return (
     <Router>

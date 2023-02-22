@@ -6,10 +6,12 @@ const Navbar = (props) => {
     const [active, setActive] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
     
+		// Shows which link is active by highlighting it 
     const handleActiveLink = (e) => {
         setActive(e.currentTarget.id);
     }
 
+		// Show a dropdown menu upon mouse hover
     const toggleDropdown = (e) => {
         console.log(showDropdown);
         setShowDropdown(!showDropdown);

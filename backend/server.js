@@ -10,11 +10,13 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Setting up middleware 
 app.use(cors());
 app.use(express.json());
 app.use('/emotions', emotionsRouter);
 app.use('/api', summaryRouter);
 
+// Connect to the database and start the server
 const start = async () => {
     try {
 			await mongoose.connect(process.env.MONGO_URI, {

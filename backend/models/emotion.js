@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Mongoose schema for the emotions
 const EmotionSchema = new mongoose.Schema({
 	file: {
 		type: String,

@@ -1,9 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
+/*
+Prints all saved emotional analyses from the MongoDB database.
+*/
 const SavedEmotions = (props) => {
 	 const [emotions, setEmotions] = useState([]);
 
+	// Retrieve all saved emotional analyses 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -17,6 +21,7 @@ const SavedEmotions = (props) => {
 		fetchData();
 	}, [])
 
+	// Map each emotion analysis 
 	const emotionList = () => {
 		return emotions.map(emotion => {
 			return (<section className='row' key={emotion._id}>
@@ -44,12 +49,8 @@ const SavedEmotions = (props) => {
 						<li>Date</li>
 					</ul>
 				</main>
-				
 			{emotionList()}
 			</section>
-			
-			
-			
 		</div>
 	)
 }

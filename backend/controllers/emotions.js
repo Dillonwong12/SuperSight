@@ -1,5 +1,8 @@
 const Emotion = require('../models/emotion');
 
+/*
+Returns all stored emotions in the database to be displayed on the 'Saved' page
+*/
 const getEmotions = async (req, res) => {
 	try {
 		const emotions = await Emotion.find()
@@ -9,6 +12,9 @@ const getEmotions = async (req, res) => {
 	}
 }
 
+/*
+Saves a new emotion analysis to the database.
+*/
 const saveEmotion = async (req, res) => {
 	try {
 		const file = req.body.file;

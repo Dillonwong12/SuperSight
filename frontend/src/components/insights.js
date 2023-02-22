@@ -2,7 +2,12 @@ import React, {Fragment} from 'react';
 import {Rings} from "react-loader-spinner";
 import PieChart from './pieChart';
 
+/*
+Renders a PieChart showing the proportion of each emotion category.
+*/
 const Insights = (props) => {
+	/* If no files have been submitted, notify the user. Once they upload a file, display a loader as analysis proceeds.
+	Finally, draw a PieChart with `emotionCounts`. */
 	return (
 		<div className='container'>
 			{props.data.length === 0 ?

@@ -25,6 +25,7 @@ if use_cuda:
 
 r = Rake(max_length=MAX_PHRASE_LEN, ranking_metric=Metric.WORD_FREQUENCY)
 
+# This is an alternative summarizer to the OpenAI API, but its results are not as accurate
 summarizer = pipeline("summarization", model='google/pegasus-xsum', tokenizer='google/pegasus-xsum')
 
 # The format of the json POST request body (emotions)
@@ -47,6 +48,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+'''
+Processes output from the emotion classification `model`. Also predicts records to be of the 'neutral' category if the 
+confidence is below `NEUTRAL_THRESHOLD`. Returns a list of numerical values corresponding to each emotion.
+'''
 def processs_output(output):
   output = nn.Softmax(dim=1)(output).tolist()
   for inner_list in output:
@@ -57,6 +62,9 @@ def processs_output(output):
   output = torch.Tensor(output).float()
   return output.argmax(dim=1).tolist()
 
+'''
+Used by the `extract` function to break `lines` into chunks smaller than `MAX_CHUNK`.
+'''
 def chunk_input(lines):
 	current_chunk = 0 
 	chunks = []
@@ -75,7 +83,11 @@ def chunk_input(lines):
 			chunks[chunk_id] = ' '.join(chunks[chunk_id])
   
 	return chunks
-                        
+
+'''
+Uses a fine-tuned HuggingFace model to make predictions about the emotion of a given customer feedback record.
+Performs basic preprocessing, and returns `results`, a list of the predicted emotions (raw numerical values).
+'''          
 @app.post('/predict')
 async def predict(input: Input):
   predictions = {}
@@ -94,7 +106,10 @@ async def predict(input: Input):
   
   return {"result": results}
 
-
+'''
+Extracts keywords from each emotion category by applying the RAKE algorithm. Returns `results`, a list of extracted
+keywords and their respective scores, with the highest scores first.
+'''
 @app.post('/extract')
 async def extract(input: Input):
   results = []
@@ -108,7 +123,10 @@ async def extract(input: Input):
   print(results)
   return {'result': results}
 
-
+'''
+Alternative summarizer path, produces a summary of call center transcripts. Splits text into smaller 
+chunks to avoid the max token limit.
+'''
 @app.post('/summarize')
 async def summarize(input: InputText):
   print('input: ', input.text)

@@ -1,12 +1,14 @@
 from torch import nn
 from transformers import AutoModel, AutoTokenizer
 
-
 MODEL_NAME = 'microsoft/xtremedistil-l6-h384-uncased'
 LABEL_N = 7
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
+'''
+The architecture of the fine-tuned HuggingFace model which is used to perform inferences on emotion. 
+'''
 class Classifier(nn.Module):
 
     def __init__(self, dropout=0.3):

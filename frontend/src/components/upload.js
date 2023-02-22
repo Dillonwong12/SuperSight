@@ -1,5 +1,9 @@
 import React from 'react';
 
+/*
+Renders the Upload page, which is used to upload Excel/CSV files for analysis. Prints the first 100 records from
+the uploaded file.
+*/
 const Upload = (props) => {
 
 	return (
@@ -26,10 +30,6 @@ const Upload = (props) => {
 					/>
 	
 			<div className='container'>
-				{/* {uploadLabel}
-			{props.data.map((item, i) => (
-				<div key={i}>{item.text} </div>
-			))}*/}
 				<ul className='table'>
 					{props.uploadLabel !== '' &&
 						<li className='table-title'>Displaying 100/{props.data.length} rows from {props.uploadLabel}</li>

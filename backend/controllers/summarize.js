@@ -1,6 +1,7 @@
 const { Configuration, OpenAIApi } = require('openai');
 require('dotenv').config();
 
+// Configuring the API key
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -27,6 +28,7 @@ const summarize = async (req, res) => {
   }
 
   try {
+		// Settings for the OpenAI model 
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(text),
